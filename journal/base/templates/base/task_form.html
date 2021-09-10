@@ -11,6 +11,8 @@
         {% csrf_token %}
         {{form.as_p}}
         <input class="button" type="submit" value="Submit">
+        <a style="float: right; padding:  15px" href="{% url 'contacts' %}">Add new Contact</a>
+        <a style="float: right; padding:  15px" href="{% url 'stacks' %}">Add new stack</a>
     </form>
 </div>
 

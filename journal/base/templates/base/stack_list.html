@@ -36,16 +36,10 @@
 
     {% for stack in stacks %}
     <div class="stack-wrapper" data-position="{{stack.pk}}">
-
-        <div class="stack-title">
-            <div class="stack-incomplete-icon"></div>
-            <a href="{% url 'stack-update' stack.id %}">{{stack}}</a>
+        <div style="overflow: hidden;">
+            <a href="{% url 'stack-update' stack.id %}" style="float: left; padding:  15px">{{stack}}</a>
+            <a class="delete-link" href="{% url 'stack-delete' stack.id %}" style="float: right; padding:  15px">&#215;</a>
         </div>
-        <div class="stack-controls">
-            <a class="delete-link" href="{% url 'stack-delete' stack.id %}">&#215;</a>
-            <span class="handle">&nbsp;&#10247;</span>
-        </div>
-
     </div>
 
     {% empty %}

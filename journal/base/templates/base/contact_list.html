@@ -36,14 +36,9 @@
 
     {% for contact in contacts %}
     <div class="contact-wrapper" data-position="{{contact.pk}}">
-        <div class="contact-title">
-
-            <div class="contact-incomplete-icon"></div>
-            <a href="{% url 'contact-update' contact.id %}">{{contact}}</a>
-        </div>
-        <div class="contact-controls">
-            <a class="delete-link" href="{% url 'contact-delete' contact.id %}">&#215;</a>
-            <span class="handle">&nbsp;&#10247;</span>
+        <div style="overflow: hidden;">
+            <a href="{% url 'contact-update' contact.id %}" style="float: left; padding:  15px">{{contact}}</a>
+            <a class="delete-link" href="{% url 'contact-delete' contact.id %}" style="float: right; padding:  15px">&#215;</a>
         </div>
     </div>
 
