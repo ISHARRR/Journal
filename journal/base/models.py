@@ -22,6 +22,18 @@ class Contact(models.Model):
         order_with_respect_to = 'user'
 
 
+class Stack(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
+    language = models.CharField(max_length=20)
+    description = models.TextField(null=True, blank=True)
+
+    def __str__(self):
+        return self.first_name + " " + self.last_name + ": " + self.phone
+
+    class Meta:
+        order_with_respect_to = 'user'
+
+
 class Task(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     title = models.CharField(max_length=200)
@@ -33,14 +45,6 @@ class Task(models.Model):
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-
-    Software = models.BooleanField(default=False)
-    python = models.BooleanField(default=False)
-    java = models.BooleanField(default=False)
-    django = models.BooleanField(default=False)
-    c_sharp = models.BooleanField(default=False)
-    cpp = models.BooleanField(default=False)
-    js = models.BooleanField(default=False)
 
     created = models.DateTimeField(auto_now_add=True)
 
