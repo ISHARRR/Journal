@@ -15,7 +15,7 @@ from django.views import View
 from django.shortcuts import redirect
 from django.db import transaction
 
-from .models import Task, Contact
+from .models import Task, Contact, Stack
 from .forms import PositionForm
 
 
@@ -66,15 +66,9 @@ class TaskList(LoginRequiredMixin, ListView):
         return context
 
 
-# class TaskDetail(LoginRequiredMixin, DetailView):
-#     model = Task
-#     context_object_name = 'task'
-#     template_name = 'base/task.html'
-
-
 class TaskCreate(LoginRequiredMixin, CreateView):
     model = Task
-    fields = ['title', 'description', 'complete', 'contact']
+    fields = ['title', 'description', 'stack', 'contact', 'complete']
     success_url = reverse_lazy('tasks')
 
     def form_valid(self, form):
@@ -84,7 +78,7 @@ class TaskCreate(LoginRequiredMixin, CreateView):
 
 class TaskUpdate(LoginRequiredMixin, UpdateView):
     model = Task
-    fields = ['title', 'description', 'complete', 'contact']
+    fields = ['title', 'description', 'stack', 'contact', 'complete']
     success_url = reverse_lazy('tasks')
 
 
@@ -111,15 +105,7 @@ class TaskReorder(View):
         return redirect(reverse_lazy('tasks'))
 
 
-
-
-
-
-
-
-
-
-
+# contacts
 class ContactList(LoginRequiredMixin, ListView):
     model = Contact
     context_object_name = 'contacts'
@@ -131,7 +117,7 @@ class ContactList(LoginRequiredMixin, ListView):
         search_input = self.request.GET.get('search-area') or ''
         if search_input:
             context['contacts'] = context['contacts'].filter(
-                title__contains=search_input)
+                first_name__contains=search_input)
 
         context['search_input'] = search_input
 
@@ -158,5 +144,46 @@ class DeleteContactView(LoginRequiredMixin, DeleteView):
     model = Contact
     context_object_name = 'Contact'
     success_url = reverse_lazy('contacts')
+
+
+# stack
+class StackList(LoginRequiredMixin, ListView):
+    model = Stack
+    context_object_name = 'stacks'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['stacks'] = context['stacks'].filter(user=self.request.user)
+
+        search_input = self.request.GET.get('search-area') or ''
+        if search_input:
+            context['stacks'] = context['stacks'].filter(
+                language__contains=search_input)
+
+        context['search_input'] = search_input
+
+        return context
+
+
+class StackCreate(LoginRequiredMixin, CreateView):
+    model = Stack
+    fields = ['language', 'description']
+    success_url = reverse_lazy('stacks')
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super(StackCreate, self).form_valid(form)
+
+
+class StackUpdate(LoginRequiredMixin, UpdateView):
+    model = Stack
+    fields = ['language', 'description']
+    success_url = reverse_lazy('stacks')
+
+
+class DeleteStackView(LoginRequiredMixin, DeleteView):
+    model = Stack
+    context_object_name = 'Stack'
+    success_url = reverse_lazy('stacks')
 
 

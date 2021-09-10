@@ -28,7 +28,7 @@ class Stack(models.Model):
     description = models.TextField(null=True, blank=True)
 
     def __str__(self):
-        return self.first_name + " " + self.last_name + ": " + self.phone
+        return self.language + ": " + self.description
 
     class Meta:
         order_with_respect_to = 'user'
@@ -42,6 +42,7 @@ class Task(models.Model):
 
     # contact = models.CharField(max_length=11)
     contact = models.ManyToManyField(Contact)
+    stack = models.ManyToManyField(Stack)
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
